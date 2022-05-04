@@ -6,7 +6,7 @@ from keras.models import load_model
 from scipy.interpolate import splev, splrep
 from sklearn.metrics import confusion_matrix
 
-base_dir = "dataset"
+base_dir = "dataset/apnea-ecg-database-1.0.0"
 
 ir = 3
 before = 2

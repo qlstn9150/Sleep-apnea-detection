@@ -12,7 +12,7 @@ from keras.regularizers import l2
 from scipy.interpolate import splev, splrep
 import pandas as pd
 
-base_dir = "dataset"
+base_dir = "dataset/apnea-ecg-database-1.0.0"
 
 ir = 3 # interpolate interval
 before = 2
@@ -56,7 +56,7 @@ def load_data():
 
 
 def create_model(input_shape, weight=1e-3):
-	"""Create a Modified LeNet-5 model"""
+	#Create a Modified LeNet-5 model
     inputs = Input(shape=input_shape)
 
 	# Conv1
@@ -89,11 +89,11 @@ def lr_schedule(epoch, lr):
 
 
 def plot(history):
-	"""Plot performance curve"""
+	#Plot performance curve
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))
     axes[0].plot(history["loss"], "r-", history["val_loss"], "b-", linewidth=0.5)
     axes[0].set_title("Loss")
-    axes[1].plot(history["acc"], "r-", history["val_acc"], "b-", linewidth=0.5)
+    axes[1].plot(history["accuracy"], "r-", history["val_accuracy"], "b-", linewidth=0.5)
     axes[1].set_title("Accuracy")
     fig.tight_layout()
     fig.show()
@@ -130,6 +130,5 @@ if __name__ == "__main__":
     # save prediction score
     y_score = model.predict(x_test)
     output = pd.DataFrame({"y_true": y_test[:, 1], "y_score": y_score[:, 1], "subject": groups_test})
-    output.to_csv(os.path.join("output", "LeNet.csv"), index=False)
-
+    output.to_csv(os.path.join("utils/code_for_calculating_per-recording/output", "LeNet.csv"), index=False)
     plot(history.history)

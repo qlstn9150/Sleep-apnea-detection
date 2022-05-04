@@ -8,12 +8,12 @@ import os
 import wfdb
 from biosppy.signals.ecg import correct_rpeaks, hamilton_segmenter
 from scipy.signal import medfilt
-from sklearn.utils import cpu_count
+#from sklearn.utils import cpu_count
 from tqdm import tqdm
 
 # PhysioNet Apnea-ECG dataset
 # url: https://physionet.org/physiobank/database/apnea-ecg/
-base_dir = "dataset"
+base_dir = "dataset/apnea-ecg-database-1.0.0/"
 
 fs = 100
 sample = fs * 60  # 1 min's sample points
@@ -23,8 +23,8 @@ after = 2  # backward interval (min)
 hr_min = 20
 hr_max = 300
 
-num_worker = 35 if cpu_count() > 35 else cpu_count() - 1  # Setting according to the number of CPU cores
-
+#num_worker = 35 if cpu_count() > 35 else cpu_count() - 1  # Setting according to the number of CPU cores
+num_worker = 1
 
 def worker(name, labels):
     X = []
@@ -60,13 +60,13 @@ def worker(name, labels):
 
 if __name__ == "__main__":
     apnea_ecg = {}
-
-    names = [
+    names = ["a01"]
+    '''names = [
         "a01", "a02", "a03", "a04", "a05", "a06", "a07", "a08", "a09", "a10",
         "a11", "a12", "a13", "a14", "a15", "a16", "a17", "a18", "a19", "a20",
         "b01", "b02", "b03", "b04", "b05",
         "c01", "c02", "c03", "c04", "c05", "c06", "c07", "c08", "c09", "c10"
-    ]
+    ]'''
 
     o_train = []
     y_train = []
@@ -91,12 +91,14 @@ if __name__ == "__main__":
         for answer in f.read().split("\n\n"):
             answers[answer[:3]] = list("".join(answer.split()[2::2]))
 
-    names = [
+    names = ["x01"]
+
+    '''names = [
         "x01", "x02", "x03", "x04", "x05", "x06", "x07", "x08", "x09", "x10",
         "x11", "x12", "x13", "x14", "x15", "x16", "x17", "x18", "x19", "x20",
         "x21", "x22", "x23", "x24", "x25", "x26", "x27", "x28", "x29", "x30",
         "x31", "x32", "x33", "x34", "x35"
-    ]
+    ]'''
 
     o_test = []
     y_test = []

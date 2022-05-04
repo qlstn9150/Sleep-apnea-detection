@@ -8,7 +8,7 @@ Sleep apnea (SA) is the most common respiratory sleep disorder, leading to some 
 
 ## Dataset
 
-[apnea-ecg](https://physionet.org/content/apnea-ecg/1.0.0/), [event-1-answers](dataset/event-1-answers), [event-2-answers](dataset/event-2-answers)
+[apnea-ecg](https://physionet.org/content/apnea-ecg/1.0.0/), [event-1-answers](dataset/apnea-ecg-database-1.0.0/event-1-answers), [event-2-answers](dataset/apnea-ecg-database-1.0.0/event-2-answers)
 
 ## Usage
 
