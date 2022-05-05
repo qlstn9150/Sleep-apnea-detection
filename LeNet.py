@@ -9,7 +9,6 @@ from keras.callbacks import LearningRateScheduler
 from keras.layers import Conv1D, Dense, Dropout, Flatten, MaxPooling1D
 from keras.models import Input, Model
 from keras.regularizers import l2
-from tensorflow.keras.models import load_model
 from scipy.interpolate import splev, splrep
 import pandas as pd
 
