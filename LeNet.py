@@ -9,11 +9,12 @@ from keras.callbacks import LearningRateScheduler
 from keras.layers import Conv1D, Dense, Dropout, Flatten, MaxPooling1D
 from keras.models import Input, Model
 from keras.regularizers import l2
+from tensorflow.keras.models import load_model
 from scipy.interpolate import splev, splrep
 import pandas as pd
 
 base_dir = "dataset/apnea-ecg-database-1.0.0"
-###
+
 ir = 3 # interpolate interval
 before = 2
 after = 2
@@ -115,7 +116,7 @@ if __name__ == "__main__":
 
     plot_model(model, "model.png") # Plot model
 
-    model = keras.utils.multi_gpu_model(model, gpus=2) # Multi-gpu acceleration (optional)
+    #model = keras.utils.multi_gpu_model(model, gpus=2) # Multi-gpu acceleration (optional)
     model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=['accuracy'])
 
     lr_scheduler = LearningRateScheduler(lr_schedule) # Dynamic adjustment learning rate
@@ -127,8 +128,32 @@ if __name__ == "__main__":
     print("Test loss: ", loss)
     print("Accuracy: ", accuracy)
 
+    Test_Loss = []
+    Test_Loss.append(loss)
+    Accuracy = []
+    Accuracy.append(accuracy)
+    
+    score = pd.DataFrame({"Loss": Test_Loss, "Accuracy": Accuracy})
+    score.to_csv(os.path.join("utils/code_for_calculating_per-recording/output", "LeNet_score.txt"), index=False)
+
     # save prediction score
     y_score = model.predict(x_test)
     output = pd.DataFrame({"y_true": y_test[:, 1], "y_score": y_score[:, 1], "subject": groups_test})
     output.to_csv(os.path.join("utils/code_for_calculating_per-recording/output", "LeNet.csv"), index=False)
-    plot(history.history)
+
+
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
+    plt.title('Accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.show()
+    
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('Loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.show()
