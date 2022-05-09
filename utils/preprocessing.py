@@ -15,6 +15,7 @@ from tqdm import tqdm
 # url: https://physionet.org/physiobank/database/apnea-ecg/
 
 base_dir = "dataset/apnea-ecg/"
+base_dir_info = "dataset/apnea-ecg/info/"
 
 fs = 100
 sample = fs * 60  # 1 min's sample points
@@ -45,11 +46,13 @@ def worker(name, labels):
         if len(rpeaks) / (1 + after + before) < 40 or \
                 len(rpeaks) / (1 + after + before) > 200:  # Remove abnormal R peaks signal
             continue
+
         # Extract RRI, Ampl signal
         rri_tm, rri_signal = rpeaks[1:] / float(fs), np.diff(rpeaks) / float(fs)
         rri_signal = medfilt(rri_signal, kernel_size=3)
         ampl_tm, ampl_siganl = rpeaks / float(fs), signal[rpeaks]
         hr = 60 / rri_signal
+
         # Remove physiologically impossible HR signal
         if np.all(np.logical_and(hr >= hr_min, hr <= hr_max)):
             # Save extracted signal
@@ -72,6 +75,7 @@ if __name__ == "__main__":
     y_train = []
     groups_train = []
     print('Training...')
+    ##이렇게 주석 달아줘
     with ProcessPoolExecutor(max_workers=num_worker) as executor:
         task_list = []
         for i in range(len(names)):
@@ -87,7 +91,7 @@ if __name__ == "__main__":
     print()
 
     answers = {}
-    with open(os.path.join(base_dir, "event-2-answers"), "r") as f:
+    with open(os.path.join(base_dir_info, "event-2-answers"), "r") as f:
         for answer in f.read().split("\n\n"):
             answers[answer[:3]] = list("".join(answer.split()[2::2]))
 
@@ -116,7 +120,8 @@ if __name__ == "__main__":
 
     apnea_ecg = dict(o_train=o_train, y_train=y_train, groups_train=groups_train, o_test=o_test, y_test=y_test,
                      groups_test=groups_test)
-    with open(os.path.join(base_dir, "apnea-ecg.pkl"), "wb") as f:
+
+    with open(os.path.join(base_dir_info, "apnea-ecg.pkl"), "wb") as f:
         pickle.dump(apnea_ecg, f, protocol=2)
 
     print("\nok!")

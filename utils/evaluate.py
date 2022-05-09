@@ -37,7 +37,7 @@ for method in methods:
     auc = roc_auc_score(all["original"] > 5, all[method])
     acc, sn, sp, auc = round(acc, 2), round(sn, 2), round(sp, 2), round(auc, 2)
     result.append([method, acc, sn, sp, auc, corr["original"][method]])
-    #result.append([method, acc * 100, sn * 100, sp * 100, auc, corr["original"][method]])
+    #result_each.append([method, acc * 100, sn * 100, sp * 100, auc, corr["original"][method]])
 
 np.savetxt(os.path.join(base_dir, "Table 2.csv"), result, fmt="%s", delimiter=",", comments="",
            header="Method,Accuracy(%),Sensitivity(%),Specificity(%),AUC,Corr")

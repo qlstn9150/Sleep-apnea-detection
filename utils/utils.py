@@ -8,12 +8,12 @@ scaler = lambda arr: (arr - np.min(arr)) / (np.max(arr) - np.min(arr))
 ir = 3 # interpolate interval
 before = 2
 after = 2
-base_dir = "dataset/apnea-ecg"
+base_dir = "dataset/apnea-ecg/info"
 
 def load_data():
     tm = np.arange(0, (before + 1 + after) * 60, step=1 / float(ir))
 
-    with open(os.path.join(base_dir, "apnea-ecg.pkl"), 'rb') as f: # read preprocessing result
+    with open(os.path.join(base_dir, "apnea-ecg.pkl"), 'rb') as f: # read preprocessing result_each
         apnea_ecg = pickle.load(f)
 
     x_train = []
