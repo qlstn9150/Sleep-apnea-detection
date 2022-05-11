@@ -35,7 +35,8 @@ def train(args):
     print('Training Time:', end-start)
 
     model.save("result_each/{}/{}.h5".format(args.model_name, args.model_name)) # Save training model
-
+    
+    plt.rc('font', size=15) 
     plt.plot(history.history['accuracy'])
     plt.plot(history.history['val_accuracy'])
     plt.title('Accuracy')
@@ -44,7 +45,8 @@ def train(args):
     plt.legend(['train', 'test'], loc='upper left')
     plt.savefig('result_each/{}/{}_accuracy.png'.format(args.model_name, args.model_name))
     plt.show()
-
+    
+    plt.rc('font', size=15) 
     plt.plot(history.history['loss'])
     plt.plot(history.history['val_loss'])
     plt.title('Loss')
