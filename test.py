@@ -14,7 +14,9 @@ def test(args):
     model.summary()
 
     print("testing:")
-    y_true, y_pred = y_test, np.argmax(model.predict(x_test, batch_size=1024, verbose=1), axis=-1)
+    y_score = model.predict(x_test)
+    y_true, y_pred = y_test, np.argmax(y_score, axis=-1)
+    #y_true, y_pred = y_test, np.argmax(model.predict(x_test, batch_size=1024, verbose=1), axis=-1)
 
     C = confusion_matrix(y_true, y_pred, labels=(1, 0))
     TP, TN, FP, FN = C[0, 0], C[1, 1], C[1, 0], C[0, 1]
@@ -27,7 +29,7 @@ def test(args):
         f.write('\n')
 
     # save prediction score
-    y_score = model.predict(x_test)
+    #y_score = model.predict(x_test)
     y_test = keras.utils.to_categorical(y_test, num_classes=2)
     output = pd.DataFrame({"y_true": y_test[:, 1], "y_score": y_score[:, 1], "subject": groups_test})
     output.to_csv('result_each/{}/{}.csv'.format(args.model_name, args.model_name), index=False)

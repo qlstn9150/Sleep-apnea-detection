@@ -1,5 +1,6 @@
 """NOTES: Batch data is different each time in keras, which result_each in slight differences in results."""
 import argparse
+import datetime
 import matplotlib.pyplot as plt
 import keras
 from keras.callbacks import LearningRateScheduler
@@ -12,10 +13,12 @@ from utils.models import *
 
 def train(args):
     x_train, y_train, groups_train, x_test, y_test, groups_test = load_data()
-    y_train = keras.utils.to_categorical(y_train, num_classes=2) # Convert to two categories
+    print('x_train:', x_train.shape)
+    y_train = keras.utils.to_categorical(y_train, num_classes=2)
     y_test = keras.utils.to_categorical(y_test, num_classes=2)
 
-    model = model1(input_shape=x_train.shape[1:])
+    model = model6(input_shape=x_train.shape[1:])
+
     model.summary()
 
     os.makedirs("result_each/{}".format(args.model_name), exist_ok=True)
@@ -24,10 +27,12 @@ def train(args):
     model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=['accuracy'])
 
     lr_scheduler = LearningRateScheduler(lr_schedule) # Dynamic adjustment learning rate
-    #tb = TensorBoard(log_dir='result_each/{}/{}'.format(args.model_name,args.model_name))
 
+    start = datetime.datetime.now()
     history = model.fit(x_train, y_train, batch_size=128, epochs=100, validation_data=(x_test, y_test),
                         callbacks=[lr_scheduler])
+    end = datetime.datetime.now()
+    print('Training Time:', end-start)
 
     model.save("result_each/{}/{}.h5".format(args.model_name, args.model_name)) # Save training model
 

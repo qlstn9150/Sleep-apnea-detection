@@ -3,7 +3,7 @@ from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score, auc
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
-model_list = ['LeNet', 'model1', 'model2', 'model3', 'model4']
+model_list = ['LeNet', 'LeNet3', 'LeNet4', 'model7']
 color_list = list(mcolors.BASE_COLORS)
 i=0
 for model_name in model_list:
