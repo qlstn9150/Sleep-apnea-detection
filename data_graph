@@ -1,0 +1,33 @@
+import pickle
+import sys
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
+import biosppy.signals.tools as st
+import numpy as np
+import os
+import wfdb
+from biosppy.signals.ecg import correct_rpeaks, hamilton_segmenter
+from scipy.signal import medfilt
+#from sklearn.utils import cpu_count
+from tqdm import tqdm
+
+
+fs = 100
+sample = fs * 60
+
+before = 2  # forward interval (min)
+after = 2  # backward interval (min)
+hr_min = 20
+hr_max = 300
+
+name = "a01"
+
+base_dir = "dataset/apnea-ecg-database-1.0.0/"
+labels = wfdb.rdann(os.path.join(base_dir, name), extension="apn").symbol
+
+X = []
+y = []
+groups = []
+
+signal = wfdb.rdrecord(os.path.join(base_dir, name), channels=[0], sampto=6000)
+wfdb.plot_wfdb(record=signal, figsize=(20,5), time_units='minutes')
